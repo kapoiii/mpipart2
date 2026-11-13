@@ -1,0 +1,853 @@
+MANAJEMEN PROYEK PERANGKAT LUNAK
+DEVFLOW: PERANCANGAN DAN IMPLEMENTASI SISTEM MANAJEMEN PROYEK BERBASIS WEB DENGAN ARSITEKTUR REAL-TIME MENGGUNAKAN NEXT.JS DAN FIREBASE
+Disusun oleh:
+Andika 
+A
+rya 
+P
+ratama 
+221011450607
+Fready Anggara 
+221011450464
+      
+        
+ 
+Mohamad 
+R
+yan 
+S
+yekhan 
+R
+amadan
+ 
+        
+2210114504
+33
+PROGAM STUDI TEKNIK INFORMATIKA
+FAKULTAS ILMU KOMUPUTER
+UNIVERSITAS PAMULANG
+2026
+DAFTAR 
+ISI
+BAB I
+3
+1.1 LATAR BELAKANG
+3
+1.2 RUMUSAN MASALAH
+4
+1.3 TUJUAN PENELITIAN
+4
+1.3.1 Tujuan Umum
+4
+1.3.2 Tujuan Khusus
+4
+1.4 MANFAAT PENELITIAN
+5
+1.4.1 Manfaat Teoritis
+5
+1.4.2 Manfaat Praktis
+5
+1.5 BATASAN MASALAH
+5
+BAB II
+6
+2.1 TINJAUAN PUSTAKA
+6
+2.1.1 Manajemen Proyek Perangkat Lunak
+6
+2.1.2 Real-Time Web Application
+6
+2.1.3 Next.js sebagai Framework Full-Stack
+6
+2.1.4 Firebase Firestore sebagai Real-Time Database
+6
+2.1.5 Role-Based Access Control (RBAC)
+6
+2.1.6 Glassmorphism dalam UI/UX Design
+6
+2.2 METODOLOGI PENGEMBANGAN
+7
+2.2.1 Pendekatan Pengembangan
+7
+2.2.2 Teknologi yang Digunakan
+7
+2.2.3 Tahapan Pengembangan
+8
+BAB III
+9
+3.1 PERANCANGAN SISTEM
+9
+3.1.1 Arsitektur Sistem
+9
+3.1.2 Skema Database (Firebase Firestore)
+9
+3.1.3 Struktur Halaman Aplikasi
+11
+3.1.4 Alur Kerja Sistem (User Flow)
+11
+3.1.5 Mekanisme Real-Time dengan onSnapshot()
+12
+3.1.6 Implementasi RBAC dengan Firestore Security Rules
+12
+3.2 RENCANA IMPLEMENTASI
+13
+3.2.1 Pembagian Tugas Tim
+13
+3.2.2 Rencana Fitur per Sprint
+13
+BAB IV
+15
+4.1 JADWAL KEGIATAN
+15
+BAB V
+16
+5.1 ANGGARAN
+16
+Daftar Pustaka
+17
+BAB I
+1.
+1
+ LATAR BELAKANG
+Dalam era transformasi digital yang berkembang pesat, pengelolaan proyek perangkat lunak secara efisien menjadi tantangan utama bagi tim pengembang modern. Komunikasi yang tidak terstruktur, ketidakjelasan pembagian tugas, dan sulitnya memantau progres pekerjaan antaranggota tim seringkali menjadi akar permasalahan dalam kegagalan proyek perangkat lunak (
+software project failure
+).
+ 
+Berdasarkan laporan 
+Standish Group Chaos Report
+, lebih dari 60% proyek perangkat lunak mengalami keterlambatan, pembengkakan biaya, atau kegagalan total. Sebagian besar disebabkan oleh lemahnya koordinasi tim dan tidak adanya sistem manajemen yang terpusat. Kondisi ini semakin krusial ketika tim bekerja secara 
+remote
+ atau tersebar (
+distributed team
+) di berbagai lokasi.
+ 
+Solusi manajemen proyek yang ada saat ini—seperti Jira, Trello, atau Asana—menawarkan fitur yang kaya, namun sering kali terlalu kompleks, berbayar mahal, dan tidak dirancang spesifik untuk kebutuhan tim pengembang kecil hingga menengah yang membutuhkan 
+standarisasi kode
+, 
+onboarding developer baru
+, dan 
+monitoring progres berbasis checklist teknis
+ secara bersamaan.
+Atas dasar permasalahan tersebut, Kelompok
+ 8
+ merancang dan mengimplementasikan 
+DevFlow
+ — sebuah sistem manajemen proyek 
+enterprise
+ berbasis web yang dibangun di atas teknologi 
+full-stack
+ modern: 
+Next.js 14
+ sebagai 
+framework
+ front-end dan 
+Firebase
+ sebagai 
+backend-as-a-service
+ dengan kemampuan 
+real-time database
+. DevFlow dirancang untuk memenuhi tiga kebutuhan spesifik tim pengembang:
+ 
+1. 
+Pemusatan progres internal tim
+ melalui dashboard intelijen bisnis berbasis data 
+real-time
+.
+2. 
+Standarisasi kode
+ (
+Code Standards
+) yang dapat diperbarui secara terpusat dan langsung terpantulkan ke seluruh anggota tim.
+3. 
+Orientasi kerja developer baru
+ (
+onboarding
+) melalui checklist tugas terstruktur tanpa miskomunikasi.
+ 
+ 
+1.2 RUMUSAN MASALAH
+Berdasarkan latar belakang yang telah diuraikan, maka rumusan masalah dalam makalah ini adalah:
+ 
+1. Bagaimana merancang sistem manajemen proyek berbasis web yang mampu menampilkan progres tim secara 
+real-time
+ tanpa perlu 
+refresh
+ halaman browser?
+2. Bagaimana mengimplementasikan sistem 
+Role-Based Access Control (RBAC)
+ yang efektif untuk membedakan hak akses antara 
+Project Manager
+ (Admin) dan 
+Developer
+ dalam satu platform terintegrasi?
+3. Bagaimana membangun mekanisme 
+CMS Checklist
+ yang bersifat dinamis sehingga Admin dapat mengelola daftar tugas secara langsung tanpa perubahan kode (
+no-code update
+)?
+4. Bagaimana merancang arsitektur database 
+NoSQL
+ menggunakan Firebase Firestore yang mampu mendukung sinkronisasi data lintas pengguna secara efisien?
+5. Bagaimana mengintegrasikan fitur 
+pelaporan otomatis
+ berbasis konversi tampilan browser ke format laporan yang siap cetak/presentasi
+1.3 TUJUAN PENELITIAN
+1.3.1 Tujuan Umum
+Merancang dan mengimplementasikan aplikasi web 
+DevFlow
+ sebagai solusi manajemen proyek 
+enterprise
+ yang efisien, real-time, dan mudah digunakan oleh tim pengembang perangkat lunak.
+ 
+1.3.2 Tujuan Khusus
+1. Membangun 
+sistem dashboard intelijen
+ yang menampilkan metrik performa tim secara 
+real-time
+, termasuk 
+Pending Checklists
+, 
+Team Alignment
+, dan 
+Standards Drift
+.
+2. Mengimplementasikan 
+RBAC dua-tingkat
+ (Admin/PM dan Developer) menggunakan Firebase Authentication dengan Google OAuth2.
+3. Merancang 
+CMS Checklist dinamis
+ yang memungkinkan Admin menambah, mengubah, dan menghapus tugas (
+global_tasks
+) yang langsung tersinkronisasi ke seluruh Developer melalui WebSocket Firebase.
+4. Membangun modul 
+Team Progress (X-Ray Mode)
+ yang memberikan visibilitas penuh kepada PM mengenai tugas spesifik yang belum diselesaikan oleh masing-masing anggota tim.
+5. Mengimplementasikan 
+Code Standards Wiki
+ terpusat yang dapat diperbarui Admin dan langsung terefleksikan ke seluruh penggu
+ 
+na sistem secara sinkron.
+6. Mengintegrasikan fitur 
+Report Generation
+ berbasis Native Browser Print API untuk menghasilkan laporan progres tim dalam format PDF/cetak.
+1.4 MANFAAT PENELITIAN
+1.4.1 Manfaat Teoritis
+Memberikan kontribusi akademis dalam pengembangan aplikasi 
+full-stack
+ berbasis arsitektur 
+JAMstack
+ (JavaScript, API, Markup) menggunakan Next.js dan Firebase.
+Menjadi referensi implementasi pola desain 
+RBAC
+ pada sistem manajemen proyek berbasis web modern.
+Mendemonstrasikan penerapan 
+WebSocket real-time
+ melalui Firebase Firestore 
+onSnapshot()
+ listener dalam konteks aplikasi kolaboratif.
+ 
+1.4.2 Manfaat Praktis
+Bagi Tim Pengembang:
+ Menyediakan platform terpusat untuk memantau progres, menstandardisasi kode, dan mempercepat proses 
+onboarding
+ developer baru.
+Bagi Project Manager:
+ Memberikan visibilitas penuh (
+full transparency
+) atas kinerja dan progres setiap anggota tim melalui dashboard yang akurat dan real-time.
+Bagi Institusi/Perusahaan:
+ Mengurangi biaya komunikasi dan risiko miskomunikasi antar anggota tim yang bekerja secara terdistribusi (
+remote work
+).
+Bagi Akademisi:
+ Menyediakan studi kasus implementasi teknologi web modern dalam konteks sistem informasi manajemen.
+1.5 BATASAN MASALAH
+Agar penelitian ini tetap terfokus dan dapat diselesaikan dalam batas waktu yang ditentukan, maka batasan masalah yang ditetapkan adalah:
+ 
+1. Sistem DevFlow dikembangkan sebagai aplikasi 
+web-based
+ dan tidak mencakup pengembangan aplikasi mobile (
+native iOS/Android
+).
+2. Autentikasi pengguna menggunakan 
+Google OAuth
+ melalui Firebase Authentication; metode autentikasi lain tidak termasuk dalam ruang lingkup.
+3. Sistem hanya mendukung 
+dua tingkatan peran
+ (
+role
+): Admin/Project Manager dan Developer.
+4. Fitur notifikasi 
+push
+ (
+email/SMS
+) tidak termasuk dalam implementasi; notifikasi dilakukan secara visual melalui antarmuka aplikasi.
+5. Penyimpanan data sepenuhnya menggunakan 
+Firebase Firestore
+ (NoSQL); migrasi ke database relasional tidak termasuk dalam lingkup.
+6. Sistem dikembangkan dan diuji pada lingkungan 
+development
+ (
+localhost:3000
+).
+ 
+BAB II
+2.1 TINJAUAN PUSTAKA
+2.1
+.1
+ Manajemen Proyek Perangkat Lunak
+Manajemen proyek perangkat lunak adalah disiplin ilmu yang mencakup perencanaan, 
+.
+pelaksanaan, pemantauan, dan pengendalian proyek pengembangan perangkat lunak (Pressman, 2010). Efektivitas manajemen proyek bergantung pada ketersediaan alat (
+tools
+) yang mendukung koordinasi tim, transparansi progres, dan standarisasi proses.
+ 
+2.1.2 Real-Time Web Application
+Aplikasi web 
+real-time
+ memungkinkan pertukaran data antara klien dan server terjadi secara instan tanpa memerlukan 
+polling
+ atau 
+refresh
+ halaman. Teknologi WebSocket dan solusi 
+Backend-as-a-Service
+ seperti Firebase Firestore memungkinkan pembangunan aplikasi kolaboratif dengan latensi sangat rendah, yakni rata-rata di bawah 50ms (Grigorik, 2013).
+ 
+2.1.3 Next.js sebagai Framework Full-Stack
+Next.js adalah 
+framework
+ React yang dikembangkan oleh Vercel, mendukung 
+Server-Side Rendering
+ (SSR), 
+Static Site Generation
+ (SSG), dan 
+App Router
+ berbasis React Server Components. Kemampuan pemisahan antara komponen server dan komponen klien (
+use client
+) memungkinkan optimasi performa superior (Vercel, 2024).
+ 
+2.1.4 Firebase Firestore sebagai Real-Time Database
+Firebase Firestore adalah 
+cloud-hosted NoSQL database
+ yang menyediakan sinkronisasi data 
+real-time
+ melalui listener 
+onSnapshot()
+. Setiap perubahan data pada server langsung dikirimkan ke semua klien yang terhubung dalam latensi rata-rata < 50ms, menjadikannya ideal untuk aplikasi kolaboratif (Google Firebase, 2024).
+ 
+2.1.5 Role-Based Access Control (RBAC)
+RBAC adalah model kontrol akses di mana hak akses diberikan berdasarkan peran (
+role
+) pengguna dalam sistem. Model ini menyederhanakan administrasi keamanan dan memastikan prinsip 
+least privilege
+ diterapkan secara konsisten (Sandhu et al., 1996).
+ 
+2.1.6 Glassmorphism dalam UI/UX Design
+Glassmorphism adalah tren desain antarmuka yang mengedepankan efek kaca semi-transparan (
+frosted glass
+), banyak digunakan dalam aplikasi 
+dark mode
+ modern. Dikombinasikan dengan skema warna 
+cyberpunk/dark indigo
+, desain ini menciptakan pengalaman visual yang premium dan profesional.
+ 
+2.2 METODOLOGI PENGEMBANGAN
+2.2.1 Pendekatan Pengembangan
+Proyek DevFlow dikembangkan menggunakan pendekatan 
+Agile Development
+ dengan metodologi 
+Scrum
+, yang terdiri dari 
+sprint
+ mingguan dengan 
+backlog
+ yang terstruktur. Pemilihan Agile didasarkan pada sifat proyek yang iteratif dan kebutuhan untuk mendapatkan 
+feedback
+ cepat dari pengguna.
+ 
+2.2.2 Teknologi yang Digunakan
+ 
+Kategori
+Teknologi
+Versi
+Fungsi
+Front-End Framework
+Next.js
+14.2.5
+Rendering, routing, SSR/CSR
+UI Library
+React
+18.3.1
+Komponen antarmuka interaktif
+Bahasa Pemrograman
+TypeScript
+5.5.4
+Type-safe development
+Styling
+Tailwind CSS
+3.4.9
+Utility-first CSS, glassmorphism
+Database
+Firebase Firestore
+10.14.1
+Real-time NoSQL database
+Authentication
+Firebase Auth
+10.14.1
+Google OAuth2 login
+Animation
+Framer Motion
+11.3.21
+UI micro-animations
+Animation
+Anime.js
+4.3.6
+Advanced CSS animations
+Icons
+Lucide React
+0.424.0
+Icon library
+AI Integration
+Google Generative AI
+0.24.1
+AI-powered features
+Report Generation
+PPTXGenJS
+4.0.1
+Laporan/presentasi otomatis
+HTTP Client
+Axios
+1.14.0
+API requests
+Notifications
+React Hot Toast
+2.6.0
+User feedback notifications
+ 
+2.2.3 Tahapan Pengembangan
+Fase 1 – Perencanaan dan Analisis:
+Identifikasi 
+stakeholder
+, pembuatan 
+user stories
+, perancangan arsitektur sistem dan skema database.
+ 
+Fase 2 – Perancangan (Design):
+Pembuatan 
+wireframe
+ dan 
+mockup
+ antarmuka, perancangan skema koleksi Firestore, dan perancangan aturan keamanan (
+Firestore Security Rules
+).
+ 
+Fase 3 – Implementasi (Development):
+Setup proyek Next.js, konfigurasi Firebase, implementasi RBAC, dan pengembangan modul Dashboard, Checklist, Team Progress, dan Code Standards.
+ 
+Fase 4 – Pengujian (Testing):
+Unit testing komponen React, integration testing alur autentikasi, dan User Acceptance Testing (UAT).
+ 
+Fase 5 – Dokumentasi dan Pelaporan:
+Penulisan dokumentasi teknis, pembuatan laporan akhir dan presentasi.
+ 
+BAB III
+3.1 PERANCANGAN SISTEM
+3.1.1 Arsitektur Sistem
+         
+    ┌─────────────────────────────────────────────────────────┐    
+    │                     CLIENT LAYER                        │    
+    │    Next.js 14 App Router + React 18 + TypeScript        │    
+    │    Tailwind CSS (Glassmorphism) + Framer Motion         │    
+    ├─────────────────────────────────────────────────────────┤    
+    │                    SERVICE LAYER                        │    
+    │    Firebase Authentication (Google OAuth2)              │    
+    │    Firebase Firestore (Real-time NoSQL)                 │    
+    │    Google Generative AI API                             │    
+    ├─────────────────────────────────────────────────────────┤    
+    │                   DATABASE LAYER                        │    
+    │  ┌────────────┐  ┌──────────────┐  ┌────────────────┐  │    
+    │  │   users    │  │ global_tasks │  │    settings    │  │    
+    │  └────────────┘  └──────────────┘  └────────────────┘  │    
+    │  ┌────────────┐  ┌────────────────────────────────────┐ │    
+    │  │  projects  │  │     user_project_progress          │ │    
+    │  └────────────┘  └────────────────────────────────────┘ │    
+    └─────────────────────────────────────────────────────────┘    
+         
+ 
+3.1.2 Skema Database (Firebase Firestore)
+Koleksi 
+users
+         
+    {    
+      "uid": "string (Firebase Auth UID)",    
+      "displayName": "string",    
+      "email": "string",    
+      "photoURL": "string",    
+      "role": "admin | developer",    
+      "completedTaskIDs": ["taskId1", "taskId2"],    
+      "percentage": "number (0-100)",    
+      "createdAt": "timestamp"    
+    }    
+         
+ 
+Koleksi 
+global_tasks
+         
+    {    
+      "id": "string (auto-generated)",    
+      "title": "string",    
+      "description": "string",    
+      "category": "string (Environment | Workflow | dll)",    
+      "createdAt": "timestamp",    
+      "createdBy": "string (adminUID)"    
+    }    
+         
+ 
+Koleksi 
+projects
+         
+    {    
+      "id": "string",    
+      "name": "string",    
+      "adminId": "string (UID admin pembuat)",    
+      "members": ["uid1", "uid2"],    
+      "inviteCode": "string",    
+      "createdAt": "timestamp"    
+    }    
+         
+ 
+Koleksi 
+user_project_progress
+         
+    {    
+      "userId": "string",    
+      "projectId": "string",    
+      "completedTaskIDs": ["taskId1"],    
+      "percentage": "number",    
+      "lastUpdated": "timestamp"    
+    }    
+         
+ 
+Koleksi 
+settings
+         
+    {    
+      "id": "codeStandards",    
+      "content": "string (markdown text)",    
+      "updatedAt": "timestamp",    
+      "updatedBy": "string (adminUID)"    
+    }    
+         
+ 
+3.1.3 Struktur Halaman Aplikasi
+ 
+Rute
+Nama Halaman
+Akses
+Deskripsi
+/
+Landing/Auth Gate
+Publik
+Halaman utama dan pengecekan sesi
+/login
+Login Page
+Publik
+Autentikasi Google OAuth2
+/join
+Join Project
+Authenticated
+Input kode undangan proyek
+/dashboard
+Dashboard
+Admin + Dev
+Metrik performa tim real-time
+/checklist
+Checklist
+Admin + Dev
+Daftar tugas dengan CRUD (Admin)
+/team
+Team Progress
+Admin only
+X-Ray view progres per developer
+/standards
+Code Standards
+Admin + Dev
+Wiki standar kode tim
+/panel
+Admin Panel
+Admin only
+Pengaturan sistem & manajemen user
+ 
+3.1.4 Alur Kerja Sistem (User Flow)
+         
+    [User Baru]    
+        │    
+        ▼    
+    [Login Google OAuth] ──► [Firebase Auth]    
+        │    
+        ▼    
+    [Cek Role di Firestore /users/{uid}]    
+        │    
+        ├── [Admin/PM] ──► [Dashboard]    
+        │                      ├── Team Progress (X-Ray Mode)    
+        │                      ├── Checklist CRUD    
+        │                      └── Standards Edit    
+        │    
+        └── [Developer] ──► [Dashboard]    
+                                ├── Checklist View & Complete    
+                                └── Standards Read-Only    
+         
+ 
+3.1.5 Mekanisme Real-Time dengan onSnapshot()
+         
+    // Implementasi real-time listener Firebase Firestore    
+    const unsubscribe = onSnapshot(    
+      collection(db, "global_tasks"),    
+      (snapshot) => {    
+        const tasks = snapshot.docs.map(doc => ({    
+          id: doc.id,    
+          ...doc.data()    
+        }));    
+        setTasks(tasks); // Update state React secara otomatis    
+      }    
+    );    
+         
+    // Cleanup listener saat komponen unmount    
+    return () => unsubscribe();    
+         
+3.
+1
+.6 Implementasi RBAC dengan Firestore Security Rules
+         
+    rules_version = '2';    
+    service cloud.firestore {    
+      match /databases/{database}/documents {    
+            
+        function isAdmin() {    
+          return request.auth != null &&     
+                 get(/databases/$(database)/documents/users/$(request.auth.uid))    
+                 .data.role == "admin";    
+        }    
+            
+        // global_tasks: semua bisa baca, hanya admin bisa CRUD    
+        match /global_tasks/{taskId} {    
+          allow read: if request.auth != null;    
+          allow create, update, delete: if isAdmin();    
+        }    
+            
+        // settings: semua bisa baca, hanya admin bisa ubah    
+        match /settings/{settingId} {    
+          allow read: if request.auth != null;    
+          allow write: if isAdmin();    
+        }    
+      }    
+    }    
+         
+ 
+ 
+3.2 RENCANA IMPLEMENTASI
+3.2.1 Pembagian Tugas Tim
+ 
+Anggota
+Peran
+Tanggung Jawab
+Anggota 1
+,2,3
+Project Manager
+Koordinasi tim, dokumentasi, presentasi
+Anggota 
+1,2,3
+Lead Developer
+Arsitektur sistem, Next.js setup, Firebase config
+Anggota 
+1,2,3
+Front-End Developer
+UI/UX Dashboard, Checklist, Animations
+Anggota 1,2,3
+Back-End Developer
+Firestore schema, Security Rules, RBAC logic
+Anggota 1,2,3
+QA & Documentation
+Testing, dokumentasi teknis, laporan akhir
+ 
+3.2.2 Rencana Fitur per Sprint
+Sprint 1 – Fondasi (Minggu 1–2)
+Inisialisasi proyek Next.js + TypeScript
+Konfigurasi Firebase (Auth + Firestore)
+Implementasi login Google O
+a
+uth2
+Perancangan skema database Firestore
+Implementasi Firestore Security Rules dasar
+ 
+Sprint 2 – Core Features (Minggu 3–4)
+Implementasi RBAC (Admin vs Developer)
+Halaman Dashboard dengan metrik real-time
+Modul Checklist dengan CMS (CRUD untuk Admin)
+Real-time sync checklist ke semua Developer
+ 
+Sprint 3 – Advanced Features (Minggu 5–6)
+Halaman Team Progress dengan X-Ray Mode
+Code Standards Wiki dengan inline editing
+Perhitungan Team Alignment & Standards Drift
+Fitur Report Generation (Print/PDF via PPTXGenJS)
+ 
+Sprint 4 – Polish & Testing (Minggu 7–8)
+Animasi dan transisi UI (Framer Motion + Anime.js)
+Optimasi performa dan loading states
+User Acceptance Testing (UAT)
+Dokumentasi dan laporan akhir
+ 
+BAB IV
+4.1 JADWAL KEGIATAN
+ 
+Minggu
+Kegiatan
+Penanggung Jawab
+Status
+1
+Analisis kebutuhan & perancangan sistem
+Semua anggota
+Selesai
+2
+Setup proyek, Firebase config, autentikasi
+Semua anggota
+Selesai
+3
+Implementasi RBAC & Dashboard
+Semua anggota
+Selesai
+4
+Modul Checklist & real-time sync
+Semua anggota
+Selesai
+5
+Team Progress & Code Standards
+Semua anggota
+Selesai
+6
+Report Generation & integrasi AI
+Semua anggota
+Selesai
+7
+Testing & bug fixing
+Semua anggota
+Selesai
+8
+Dokumentasi & persiapan presentasi
+Semua anggota
+Selesai
+ 
+Gantt Chart:
+         
+    Kegiatan               │ M1 │ M2 │ M3 │ M4 │ M5 │ M6 │ M7 │ M8 │    
+    ───────────────────────┼────┼────┼────┼────┼────┼────┼────┼────┤    
+    Analisis & Perancangan │ ██ │    │    │    │    │    │    │    │    
+    Setup & Autentikasi    │    │ ██ │    │    │    │    │    │    │    
+    RBAC & Dashboard       │    │    │ ██ │    │    │    │    │    │    
+    Checklist & Sync       │    │    │    │ ██ │    │    │    │    │    
+    Team & Standards       │    │    │    │    │ ██ │    │    │    │    
+    Report & AI            │    │    │    │    │    │ ██ │    │    │    
+    Testing                │    │    │    │    │    │    │ ██ │    │    
+    Dokumentasi            │    │    │    │    │    │    │    │ ██ │    
+         
+ 
+BAB V
+5.1 ANGGARAN
+ 
+No
+Kebutuhan
+Biaya
+Keterangan
+1
+Firebase Spark Plan
+Rp 0
+Free tier (cukup untuk development)
+2
+Vercel Hosting
+Rp 0
+Free tier untuk Next.js deployment
+3
+Domain (opsional)
+Rp 150.000
+.site
+ atau 
+.tech
+ domain 1 tahun
+4
+Google AI API
+Rp 0
+Free quota untuk development
+5
+Figma (Desain UI)
+Rp 0
+Free tier
+6
+Biaya Operasional Tim
+Rp 200.000
+Print, transportasi, konsumsi
+Total
+Rp 350.000
+ 
+ 
+Daftar Pustaka
+1. Etrariadi, N. (2023). Pengembangan Website Manajemen Proyek dengan Agile Scrum. 
+Jurnal Nasional Teknologi dan Sistem Informasi (TEKNOSI)
+.
+2. Siahaan, N. B., & Yahfizham, Y. (2024). Manajemen Proyek Pengembangan Sistem Informasi PPDB dengan Metode Agile Scrum. 
+Jurnal Riset Manajemen dan Bisnis
+.
+3. Putra, D. J. K., & Tanaem, P. F. (2022). Perancangan Aplikasi Pembukuan Menggunakan Metode Agile Scrum. 
+Jurnal Teknik Informatika dan Sistem Informasi
+.
+4. Syahputra, R., dkk. (2024). Rancang Bangun Sistem Informasi Penjualan Berbasis Web Menggunakan Metode SCRUM. 
+Jurnal Testing dan Implementasi Sistem Informasi
+.
+5. Riesna, D. M. R., dkk. (2023). Analisis Perbandingan Efektifitas Metode Manajemen Proyek TI Scrum dan Kanban. 
+Jurnal Ilmu Komputer dan Informatika
+.
+6. Prasetia, Y. A., & Manongga, D. (2024). Role-based access control (RBAC) untuk sistem otorisasi terpusat berbasis flask studi kasus PT XYZ. 
+JIPI (Jurnal Ilmiah Penelitian dan Pembelajaran Informatika)
+, 9(4), 1768–1778.
+7. Khairi, A. S., & Alda, M. (2024). Implementasi Role Based Access Control dalam Pengelolaan Hak Akses Koperasi Berbasis Mobile. 
+Jurnal Minfo Polgan
+.
+8. Yuricha, Y., & Phan, I. K. (2023). Penerapan Role Based Access Control dalam Sistem Supply Chain Management Berbasis Cloud. 
+MALCOM: Indonesian Journal of Machine Learning and Computer Science
+, 3(2), 339–348.
+9. Setyawan, R. A. (2024). Penerapan Firebase Realtime Database pada Aplikasi Catatan Harian Diabetes Melitus. 
+FAHMA: Jurnal Informatika Komputer, Bisnis dan Manajemen
+.
+10. Suradi, A. A. M., dkk. (2024). Pemanfaatan Firebase Realtime Database Dalam Perancangan Aplikasi Penilaian Siswa SMK Negeri 2 Pangkep Secara Realtime. 
+JUKI: Jurnal Komputer dan Informatika
+.
+11. Hasibuan, M. I. Z., & Triase, T. (2022). Implementasi Sistem Database NoSQL Secara Realtime Menggunakan Firebase Realtime Database pada Aplikasi Ourticle. 
+SIBATIK JOURNAL
+.
+12. Sudarsono, A., et al. (2024). Ephemeral Secret Leakage-Free ID-Role-Based Access Control Authentication and Key Exchange Protocol for Securing Electric Vehicle Data. 
+IEEE Access
+.
+13. Algifari, M., dkk. (2024). Bangun aplikasi pengarsipan dokumen berbasis web menggunakan framework Next.js (Studi kasus: Pelayanan umum Unisba Blitar). 
+INNOVATIVE: Journal of Social Science Research
+.
+14. Wibowo, S., dkk. (2024). Pengembangan Sistem Informasi Koperasi Sekolah. 
+Jurnal Sifo Mikroskil
+.
+15. Santoso, B., dkk. (2024). Implementasi Sistem Manajemen Pengguna dengan Integrasi Next.js dan ASP.NET. 
+Jurnal STRATEGI
+.
+16. Pratama, A., dkk. (2024). Implementasi Next.js dan Headless CMS untuk Peningkatan Kualitas Website MI Al Islam Pare. 
+Journal of Information Engineering and Technology
+.
+17. Utami, S., dkk. (2023). Pemanfaatan NextJS dan MongoDB dalam Sistem Informasi Web Manajemen Data Beras pada UD Sri Utami. 
+Information System for Educators and Professionals
+.
+18. Rahman, A., dkk. (2023). Front End Learning Management System Development Using The Nextjs Framework. 
+Jurnal Teknik Informatika (JUTIF)
+.
+19. Fauzi, M., dkk. (2024). Analisis Pengembangan Aplikasi Darurat Berbasis Mobile Web dengan Pendekatan Next.js Technology. 
+MALCOM: Indonesian Journal of Machine Learning and Computer Science
+.
+20. Hidayat, R., dkk. (2024). Implementasi Firebase Realtime pada Aplikasi Self-Order Restoran Berbasis iOS. 
+Jurnal Riset dan Aplikasi Mahasiswa Informatika (JRAMI)
+. 
