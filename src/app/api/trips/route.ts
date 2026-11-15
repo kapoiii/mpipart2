@@ -1,38 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { auth } from '@/lib/auth'
+import { getTripsData } from '@/lib/trips'
 
 // GET /api/trips — list all trips with remaining quota
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const search = searchParams.get('search') || ''
 
-  let query = supabaseAdmin
-    .from('trips')
-    .select(`*, itineraries(*)`)
-    .order('start_date', { ascending: true })
-
-  if (search) {
-    query = query.or(`title.ilike.%${search}%,location.ilike.%${search}%`)
-  }
-
-  const { data: trips, error } = await query
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
-  // Attach confirmed bookings count for quota calculation
-  const tripsWithQuota = await Promise.all(
-    (trips || []).map(async (trip) => {
-      const { count } = await supabaseAdmin
-        .from('bookings')
-        .select('*', { count: 'exact', head: true })
-        .eq('trip_id', trip.id)
-        .eq('status', 'CONFIRMED')
-      return { ...trip, _bookingsCount: count || 0 }
-    })
-  )
-
-  return NextResponse.json(tripsWithQuota)
+  const trips = await getTripsData(search)
+  return NextResponse.json(trips)
 }
 
 // POST /api/trips — create trip (admin only)

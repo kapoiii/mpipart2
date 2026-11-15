@@ -32,6 +32,15 @@ export async function POST(request: NextRequest) {
 
     const orderId = `${booking.code}-${Date.now().toString().slice(-4)}`
 
+    const origin =
+      request.headers.get('origin') ||
+      process.env.NEXTAUTH_URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : 'http://localhost:3000')
+
     const parameter = {
       transaction_details: {
         order_id: orderId,
@@ -50,7 +59,7 @@ export async function POST(request: NextRequest) {
         },
       ],
       callbacks: {
-        finish: `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/booking/${booking.id}/voucher`,
+        finish: `${origin}/booking/${booking.id}/voucher`,
       },
     }
 

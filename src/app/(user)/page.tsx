@@ -3,6 +3,7 @@ import Link from 'next/link'
 import TripCard from '@/components/TripCard'
 import GlobeSlider from '@/components/GlobeSlider'
 import type { Trip } from '@/types'
+import { getTripsData } from '@/lib/trips'
 import {
   IconSearch,
   IconSparkles,
@@ -18,25 +19,13 @@ export const metadata: Metadata = {
     'Jelajahi ratusan paket open trip pendakian gunung dan wisata alam terbaik dengan sistem pemesanan modern.',
 }
 
-async function getTrips(search?: string): Promise<Trip[]> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const url = `${baseUrl}/api/trips${search ? `?search=${search}` : ''}`
-  try {
-    const res = await fetch(url, { cache: 'no-store' })
-    if (!res.ok) return []
-    return res.json()
-  } catch (e) {
-    return []
-  }
-}
-
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<{ search?: string }>
 }) {
   const { search } = await searchParams
-  const trips = await getTrips(search)
+  const trips = await getTripsData(search)
 
   return (
     <div className="dark-theme-wrapper w-full bg-[#0b0f19] text-white min-h-screen">

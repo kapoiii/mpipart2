@@ -1,26 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { auth } from '@/lib/auth'
+import { getTripData } from '@/lib/trips'
 
 // GET /api/trips/[id]
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const trip = await getTripData(id)
 
-  const { data: trip, error } = await supabaseAdmin
-    .from('trips')
-    .select(`*, itineraries(*)`)
-    .eq('id', id)
-    .single()
+  if (!trip) return NextResponse.json({ error: 'Trip not found' }, { status: 404 })
 
-  if (error || !trip) return NextResponse.json({ error: 'Trip not found' }, { status: 404 })
-
-  const { count } = await supabaseAdmin
-    .from('bookings')
-    .select('*', { count: 'exact', head: true })
-    .eq('trip_id', id)
-    .eq('status', 'CONFIRMED')
-
-  return NextResponse.json({ ...trip, _bookingsCount: count || 0 })
+  return NextResponse.json(trip)
 }
 
 // PUT /api/trips/[id] — admin only

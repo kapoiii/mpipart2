@@ -5,17 +5,11 @@ import { notFound } from 'next/navigation'
 import type { Trip } from '@/types'
 import { formatRupiah, formatDate, calcRemainingQuota } from '@/lib/utils'
 import { IconMapPin, IconClock, IconCalendar, IconUsers, IconCheck, IconCompass } from '@/components/icons'
-
-async function getTrip(id: string): Promise<Trip | null> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-  const res = await fetch(`${baseUrl}/api/trips/${id}`, { cache: 'no-store' })
-  if (!res.ok) return null
-  return res.json()
-}
+import { getTripData } from '@/lib/trips'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params
-  const trip = await getTrip(id)
+  const trip = await getTripData(id)
   return {
     title: trip ? `${trip.title}` : 'Trip Tidak Ditemukan',
     description: trip?.description || '',
@@ -24,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function TripDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const trip = await getTrip(id)
+  const trip = await getTripData(id)
   if (!trip) notFound()
 
   const remaining = calcRemainingQuota(trip.quota, trip._bookingsCount || 0)
